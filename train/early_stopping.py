@@ -30,6 +30,7 @@ class EarlyStopping:
         train_compare: Callable[[dict | float, dict | float], float]=None,
         valid_compare: Callable[[dict | float, dict | float], float]=None,
         judge_channel: int=-1,
+        save_log: bool=True,
         args: Namespace=None
     ) -> None:
         """
@@ -45,6 +46,7 @@ class EarlyStopping:
         :param train_compare: 训练过程比较函数，输出优越差
         :param valid_compare: 验证过程比较函数，输出优越差
         :param judge_channel: 训练/验证过程损失/dice通道选择
+        :param save_log: 是否保存日志
         :param args: 命令行参数解析器
         :return:
         """
@@ -61,6 +63,7 @@ class EarlyStopping:
         self.save_criterion = save_criterion
         self.save_interval = save_interval
         self.verbose = verbose
+        self.save_log = save_log
 
         self.train_compare = train_compare if train_compare else EarlyStoppingMethods.train_compare
         self.valid_compare = valid_compare if valid_compare else EarlyStoppingMethods.valid_compare
@@ -98,9 +101,9 @@ class EarlyStopping:
                 else: value = f'{value:.5f}'
                 cache += f"{f'{judge_mode} {key}: {value}': <30}"
                 if i % concat == 0:
-                    print(cache)
+                    self.smart_print(cache)
             if i % concat:
-                print(cache)
+                self.smart_print(cache)
 
         def __save():
             """
@@ -126,20 +129,19 @@ class EarlyStopping:
             self.__save_criteria(judge_mode)
 
         if judge_mode == self.stop_criterion:
-            if self.stop_criteria is None:
-                self.stop_criteria = new_criteria
-            elif compare(self.stop_criteria, new_criteria) > self.min_delta:
+            if self.stop_criteria is None or compare(self.stop_criteria, new_criteria) > self.min_delta:
                 self.counter = 0
+                self.stop_criteria = new_criteria
             else:
                 self.counter += 1
                 if self.verbose:
-                    print(f"Early stopping: {self.counter}/{self.patience}")
+                    self.smart_print(f"Early stopping: {self.counter}/{self.patience}")
                 if self.counter >= self.patience:
                     self.early_stop = True
 
         elif judge_mode == self.save_criterion:
-            if self.save_criteria is None:  __save()
-            elif compare(self.save_criteria, new_criteria) > 0: __save()
+            if self.save_criteria is None or compare(self.save_criteria, new_criteria) > 0:
+                __save()
 
     def end_display(self) -> None:
         """
@@ -147,7 +149,19 @@ class EarlyStopping:
         :return:
         """
         self.__save_model('last')
-        print(f"best criteria: {self.save_criteria} at epoch {self.best_epoch + 1}")
+        self.smart_print(f"best criteria: {self.save_criteria} at epoch {self.best_epoch + 1}")
+
+    def smart_print(self, message: str) -> None:
+        """
+        用于输出信息+保存日志
+        :param message: 需要输出的信息
+        :return:
+        """
+        print(message)
+        if not self.save_log or self.save_dir is None:
+            return
+        with open(os.path.join(self.save_dir, 'log.txt'), 'a') as f:
+            f.write(message + '\n')
 
     def __update(self, new_criteria: dict, update_mode: Literal['train', 'valid']) -> None:
         """
@@ -173,7 +187,7 @@ class EarlyStopping:
         保存模型
         :return:
         """
-        if self.verbose: print(f"Saving model to {self.save_dir}...")
+        if self.verbose: self.smart_print(f"Saving model to {self.save_dir}...")
         torch.save(self.model.state_dict(), os.path.join(self.save_dir, f'model_{save_mode}.pth'))
 
     def __save_criteria(self, save_mode: Literal['train', 'valid']) -> None:

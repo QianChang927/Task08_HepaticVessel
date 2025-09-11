@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7e8b217-3b13-4bef-b1be-a7451d449c0d" name="Changes" comment="" />
+    <list default="true" id="b7e8b217-3b13-4bef-b1be-a7451d449c0d" name="Changes" comment="初始化代码仓库。">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Task03_Liver.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/train/early_stopping.py" beforeDir="false" afterPath="$PROJECT_DIR$/train/early_stopping.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,12 +49,12 @@
     &quot;assignee&quot;: &quot;QianChang927&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/QianChang927/Task03_Liver.git&quot;,
-    &quot;accountId&quot;: &quot;b18cfdad-9428-4104-8318-d2e9c1d2912a&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/QianChang927/Task08_HepaticVessel.git",
+    "accountId": "b18cfdad-9428-4104-8318-d2e9c1d2912a"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -57,55 +66,56 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python tests.Python tests in test_running.py.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.arg_parser.executor&quot;: &quot;Run&quot;,
-    &quot;Python.config_parser.executor&quot;: &quot;Run&quot;,
-    &quot;Python.data_reader.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.plot.executor&quot;: &quot;Run&quot;,
-    &quot;Python.read_data.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.repeat_setter.executor&quot;: &quot;Run&quot;,
-    &quot;Python.resnet_3d.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.test_running.executor&quot;: &quot;Run&quot;,
-    &quot;Python.unet_3d.executor&quot;: &quot;Run&quot;,
-    &quot;Python.vnet_3d.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Postgraduate/SegmentTraning/MSD/Task08_HepaticVessel&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python tests.Python tests in test_running.py.executor": "Debug",
+    "Python.arg_parser.executor": "Run",
+    "Python.config_parser.executor": "Run",
+    "Python.data_reader.executor": "Debug",
+    "Python.plot.executor": "Run",
+    "Python.read_data.executor": "Debug",
+    "Python.repeat_setter.executor": "Run",
+    "Python.resnet_3d.executor": "Run",
+    "Python.run.executor": "Debug",
+    "Python.scratch.executor": "Run",
+    "Python.test.executor": "Debug",
+    "Python.test_running.executor": "Run",
+    "Python.unet_3d.executor": "Run",
+    "Python.vnet_3d.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
+    "WebServerToolWindowPanel.toolwindow.show.date": "false",
+    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
+    "WebServerToolWindowPanel.toolwindow.show.size": "false",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/Postgraduate/SegmentTraning/MSD/Task08_HepaticVessel",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.fileTypes",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;Jupyter&quot;,
-      &quot;Python&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Jupyter",
+      "Python"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Postgraduate\SegmentTraning\MSD\Task03_Liver\parser" />
       <recent name="D:\Postgraduate\SegmentTraning\MSD\Task03_Liver\config" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.plot">
+  <component name="RunManager" selected="Python.run">
     <configuration name="plot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Task03_Liver" />
       <option name="ENV_FILES" value="" />
@@ -225,8 +235,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.plot" />
         <item itemvalue="Python.run" />
+        <item itemvalue="Python.plot" />
         <item itemvalue="Python.scratch" />
         <item itemvalue="Python.resnet_3d" />
         <item itemvalue="Python.unet_3d" />
@@ -406,6 +416,7 @@
       <workItem from="1757565132321" duration="2167000" />
       <workItem from="1757567329770" duration="120000" />
       <workItem from="1757567482600" duration="356000" />
+      <workItem from="1757567851667" duration="2498000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成模块化">
       <option name="closed" value="true" />
@@ -719,7 +730,15 @@
       <option name="project" value="LOCAL" />
       <updated>1756907455052</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="初始化代码仓库。">
+      <option name="closed" value="true" />
+      <created>1757567971654</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1757567971654</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -737,7 +756,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="优化run.py及plot.py" />
     <MESSAGE value="优化plot.py的筛选函数" />
     <MESSAGE value="更改存放逻辑，现在list会以.pt的后缀存放了" />
     <MESSAGE value="优化配置保存，现在可以保存模型、损失、优化器等相关配置了" />
@@ -762,7 +780,8 @@
     <MESSAGE value="复现适用于MSD分割任务的ResNet网络" />
     <MESSAGE value="完善ArgParser，同时将test_running.ipynb作为标签标记测试文件" />
     <MESSAGE value="修复bug：现在默认的训练函数，肿瘤标签会自动处理为前景标签" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复bug：现在默认的训练函数，肿瘤标签会自动处理为前景标签" />
+    <MESSAGE value="初始化代码仓库。" />
+    <option name="LAST_COMMIT_MESSAGE" value="初始化代码仓库。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -778,11 +797,11 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Task03_Liver$test_running.coverage" NAME="test_running Coverage Results" MODIFIED="1751012841306" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Task03_Liver$run.coverage" NAME="run Coverage Results" MODIFIED="1757067733191" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Task03_Liver$resnet_3d.coverage" NAME="resnet_3d Coverage Results" MODIFIED="1755828526925" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/model" />
     <SUITE FILE_PATH="coverage/Task08_HepaticVessel$plot.coverage" NAME="plot Coverage Results" MODIFIED="1757559642334" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Task03_Liver$resnet_3d.coverage" NAME="resnet_3d Coverage Results" MODIFIED="1755828526925" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/model" />
     <SUITE FILE_PATH="coverage/Task03_Liver$config_parser.coverage" NAME="config_parser Coverage Results" MODIFIED="1754326525878" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/parser" />
     <SUITE FILE_PATH="coverage/Task03_Liver$.coverage" NAME=" Coverage Results" MODIFIED="1751003569643" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Task08_HepaticVessel$run.coverage" NAME="run Coverage Results" MODIFIED="1757240267663" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Task08_HepaticVessel$run.coverage" NAME="run Coverage Results" MODIFIED="1757577906966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Task03_Liver$plot.coverage" NAME="plot Coverage Results" MODIFIED="1756905352293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Task03_Liver$data_reader.coverage" NAME="data_reader Coverage Results" MODIFIED="1754250897148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data" />
     <SUITE FILE_PATH="coverage/Task03_Liver$unet_3d.coverage" NAME="unet_3d Coverage Results" MODIFIED="1755701875111" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/model" />
