@@ -139,7 +139,7 @@ class EarlyStopping:
                 if self.counter >= self.patience:
                     self.early_stop = True
 
-        elif judge_mode == self.save_criterion:
+        if judge_mode == self.save_criterion:
             if self.save_criteria is None or compare(self.save_criteria, new_criteria) > 0:
                 __save()
 
