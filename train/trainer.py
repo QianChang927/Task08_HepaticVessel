@@ -152,6 +152,59 @@ class TrainerMethods:
     训练器的默认静态方法类
     """
     @staticmethod
+    def convert_to_onehot(tensor: Tensor, num_classes: int) -> Tensor:
+        """
+        将原有张量转为指定num_classes的one-hot编码张量
+        :param tensor 需要转化的张量[B, C, H, W, D]
+        :param num_classes one-hot编码张量的类别数
+        :return: 转化后的one-hot编码张量
+        """
+        one_hot = torch.zeros(tensor.shape[0], num_classes, *tensor.shape[2:], dtype=torch.float32, device=tensor.device)
+        for ch in range(num_classes):
+            one_hot[:, ch:] = (tensor == ch).float()
+        return one_hot
+
+    @staticmethod
+    def dice_coef(pred: Tensor, label: Tensor, epsilon: float = 1e-6, include_background: bool=True) -> list[float]:
+        """
+        计算Dice系数
+        :param pred 预测张量，若要启用hard-dice模式须传入argmax+one-hot编码后的结果
+        :param label 真实标签，通道与pred不匹配时将自动进行one-hot编码
+        :param epsilon 防止分母为0的阈值
+        :param include_background 是否包含背景（one-hot编码中0为背景）
+        :return: 每个通道的Dice系数
+        """
+        # 不存在batch_size信息时增加一维，保持维度一致
+        if pred.dim() == 4: pred = pred.unsqueeze(0)
+        if label.dim() == 4: label = label.unsqueeze(0)
+
+        # 处理label为one-hot标签
+        if pred.shape != label.shape:
+            label_onehot = TrainerMethods.convert_to_onehot(label, num_classes=pred.shape[1])
+        else: label_onehot = label
+
+        # 形状check
+        assert pred.shape == label_onehot.shape, f"Shape mismatch: pred {pred.shape} label {label_onehot.shape}"
+
+        # 忽略背景，请注意之后若不重新分配内存，请勿直接修改pred和label的数值
+        start_channel = ~int(include_background) & 1
+        pred = pred[:, start_channel:]
+        label_onehot = label_onehot[:, start_channel:]
+
+        # 展平为[batch_size, channels, N]方便计算
+        pred_flat = pred.contiguous().view(pred.shape[0], pred.shape[1], -1)
+        label_flat = label_onehot.contiguous().view(label_onehot.shape[0], label_onehot.shape[1], -1)
+
+        # 根据公式计算dice系数，注意epsilon的作用
+        part_inter = (pred_flat * label_flat).sum(-1)
+        part_union = pred_flat.sum(-1) + label_flat.sum(-1)
+        dice_batch = (2. * part_inter + epsilon) / (part_union + epsilon)
+
+        # 对batch取平均
+        dice_mean = dice_batch.mean(dim=0)
+        return dice_mean
+
+    @staticmethod
     def train(
         model: Module,
         data_loader: DataLoader,
@@ -176,39 +229,16 @@ class TrainerMethods:
         epoch_loss = 0
         epoch_dice = 0
 
-        def __calc_dice(y_pred: Tensor, y: Tensor) -> float:
-            """
-            计算dice矩阵
-            :param y_pred: 预测值
-            :param y: 真实值
-            :return: 返回dice系数
-            """
-            import inspect
-            from monai.losses import DiceLoss
-            init_params = inspect.signature(DiceLoss).parameters
-            valid_keys = set(init_params.keys())
-            loss_fn_dict = loss_fn.__dict__
-            filtered_dict = { key: value for key, value in loss_fn_dict.items() if key in valid_keys }
-            if 'to_onehot_y' not in filtered_dict: filtered_dict['to_onehot_y'] = True
-            if 'softmax' not in filtered_dict and 'sigmoid' not in filtered_dict:
-                if CONFIG.OUT_CHANNELS != 1: filtered_dict['softmax'] = True
-                else: filtered_dict['sigmoid'] = True
-            filtered_dict.update({'reduction': 'none'})
-            dice_loss = DiceLoss(**filtered_dict)
-            loss = dice_loss(y_pred, y)
-            if len(loss.shape) > 1: loss = loss[:, CONFIG.JUDGE_CHANNEL].mean()
-            dice = 1 - loss.item()
-            return dice
-
         for batch in data_loader:
             images, labels = batch_process(batch, device)
             train_step += 1
 
-            _loss, _outputs = 0, 0
+            _loss, _outputs = torch.Tensor(), torch.Tensor()
             def closure():
                 outputs = model(images)
                 loss = loss_fn(outputs, labels)
-                if len(loss.shape) > 1: loss = loss[:, CONFIG.JUDGE_CHANNEL].mean()
+                if loss.shape[0] > 1:
+                    loss = loss[CONFIG.JUDGE_CHANNEL]
                 nonlocal _loss, _outputs
                 _loss, _outputs = loss.item(), outputs
                 loss.backward()
@@ -217,12 +247,14 @@ class TrainerMethods:
             optimizer.zero_grad()
             optimizer.step(closure)
 
+            epoch_dice += TrainerMethods.dice_coef(torch.softmax(_outputs, dim=1), labels)
             epoch_loss += _loss
-            epoch_dice += __calc_dice(_outputs, labels)
             smart_print(f"{train_step}/{len(data_loader)}, train loss: {_loss:.4f}")
 
-        epoch_loss /= train_step
         epoch_dice /= train_step
+        epoch_loss /= train_step
+        if hasattr(epoch_dice, 'tolist'): epoch_dice = epoch_dice.tolist()
+        if hasattr(epoch_loss, 'tolist'): epoch_loss = epoch_loss.tolist()
         return {'loss': epoch_loss, 'dice': epoch_dice}
 
     @staticmethod
@@ -251,28 +283,22 @@ class TrainerMethods:
         from monai.data import decollate_batch
         from monai import transforms
 
+        post_pred = transforms.Compose([
+            transforms.Activations(softmax=True),
+            transforms.AsDiscrete(argmax=True, to_onehot=CONFIG.OUT_CHANNELS)
+        ])
+
+        post_label = transforms.Compose([
+            transforms.AsDiscrete(to_onehot=CONFIG.OUT_CHANNELS)
+        ])
+
         import inspect
         init_params = inspect.signature(DiceMetric).parameters
         valid_keys = set(init_params.keys())
         loss_fn_dict = loss_fn.__dict__
         filtered_dict = {key: value for key, value in loss_fn_dict.items() if key in valid_keys}
+        filtered_dict.update({'reduction': 'none'})
         dice_metric = DiceMetric(**filtered_dict)
-
-        post_pred = transforms.Compose([
-            transforms.Activations(softmax=True),
-            transforms.AsDiscrete(argmax=True),
-            transforms.KeepLargestConnectedComponent(applied_labels=[1]),
-            transforms.AsDiscrete(to_onehot=CONFIG.OUT_CHANNELS)
-        ])
-        post_label = transforms.Compose([
-            transforms.AsDiscrete(to_onehot=CONFIG.OUT_CHANNELS)
-        ])
-        # post_pred = transforms.Compose([
-        #     transforms.Activations(sigmoid=True),
-        #     transforms.AsDiscrete(threshold=0.5),
-        #     transforms.KeepLargestConnectedComponent(applied_labels=[1])
-        # ])
-        # post_label = transforms.AsDiscrete()
 
         for batch in data_loader:
             images, labels = batch_process(batch, device)
@@ -285,7 +311,12 @@ class TrainerMethods:
         dice_metric.reset()
 
         if scheduler is not None:
-            if len(dice.shape) > 1:
+            from typing import Sequence
+            dice_shape = dice.shape
+            if not isinstance(dice_shape, Sequence):
+                dice_shape = [dice_shape]
+
+            if len(dice_shape) > 1 or dice_shape[0] > 1:
                 dice_judge = dice[CONFIG.JUDGE_CHANNEL].item()
                 dice = dice.tolist()
             else:

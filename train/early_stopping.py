@@ -6,6 +6,7 @@ from argparse import Namespace
 from torch.nn import Module
 from typing import Literal, Callable, Sequence
 
+
 class CONFIG:
     """
     用于保存常量的配置类
@@ -218,7 +219,9 @@ class EarlyStoppingMethods:
         :return: >0 criteria_2更优越; <0 criteria_1更优越; =0 二者无区别
         """
         cri_1 = criteria_1.get('loss', 0.) if isinstance(criteria_1, dict) else criteria_1
+        if isinstance(cri_1, Sequence): cri_1 = cri_1[CONFIG.JUDGE_CHANNEL]
         cri_2 = criteria_2.get('loss', 0.) if isinstance(criteria_2, dict) else criteria_2
+        if isinstance(cri_2, Sequence): cri_2 = cri_2[CONFIG.JUDGE_CHANNEL]
         return float(cri_1 - cri_2)
 
     @staticmethod

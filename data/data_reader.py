@@ -260,7 +260,7 @@ class TransformsMSD:
                 prob=0.5
             ),
             transforms.RandGaussianNoised(
-                keys=self.keys,
+                keys=self.keys[0],
                 prob=0.2
             ),
             transforms.ToTensord(

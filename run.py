@@ -5,13 +5,14 @@ import monai.networks.layers as monai_layers
 
 from data import DataReaderMSD
 from model import UNet3D, VNet3D, ResNet
-from train import Trainer, EarlyStopping
+from train import Trainer, EarlyStopping, DiceCrossEntropyLoss
 from parser import ArgParser, ConfigParser
 from repeat import RepeatSetter
 
 from torch import nn
 from datetime import datetime
-from monai.losses import DiceLoss, DiceCELoss
+
+CPU_MODE = False
 
 if __name__ == '__main__':
     parser = ArgParser()
@@ -22,7 +23,8 @@ if __name__ == '__main__':
         repeat_setter()
 
     save_dir = os.path.abspath(os.path.join(args.save_dir, datetime.now().strftime('%Y%m%d%H%M')[2:]))
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if CPU_MODE: device = torch.device('cpu')
+    else: device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     data_reader = DataReaderMSD(
         root_dir=args.root_dir,
@@ -123,24 +125,13 @@ if __name__ == '__main__':
 
     save_dir += f'_{ConfigParser.get_obj_name(model)}'
 
-    loss_fn = DiceCELoss(
-        include_background=False,
+    loss_fn = DiceCrossEntropyLoss(
+        ce_weight=1,
+        dice_weight=1,
         to_onehot_y=True,
         softmax=True,
-        reduction="mean"
+        reduction='none'
     )
-    # loss_fn = DiceLoss(
-    #     include_background=True,
-    #     to_onehot_y=True,
-    #     softmax=True,
-    #     reduction="none"
-    # )
-    # loss_fn = DiceLoss(
-    #     include_background=True,
-    #     to_onehot_y=True,
-    #     sigmoid=True,
-    #     reduction="none"
-    # )
 
     if args.optimizer == 'Adam':
         optimizer = torch.optim.Adam(
@@ -170,7 +161,7 @@ if __name__ == '__main__':
     early_stopping = EarlyStopping(
         model=model,
         save_dir=save_dir,
-        patience=args.epochs // 5,
+        patience=args.epochs // 10,
         min_delta=1e-05,
         stop_criterion='train',
         save_criterion='valid',

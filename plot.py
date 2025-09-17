@@ -381,7 +381,7 @@ if __name__ == '__main__':
     plot = Plot(
         root_dir='./checkpoint',
         process_seq=[
-            # {'func': ModifyMethods.filter_ctime, 'args': [datetime(2025, 8, 20), datetime(2025, 8, 31)]},
+            {'func': ModifyMethods.filter_ctime, 'args': [datetime(2025, 9, 12), datetime(2025, 9, 30)]},
             # {'func': ModifyMethods.filter_kwargs, 'args': ['omit', {'resnet_type': 'A'}]},
             {'func': ModifyMethods.filter_kwargs, 'args': ['select', {'lr': 1e-04}]}
         ],
